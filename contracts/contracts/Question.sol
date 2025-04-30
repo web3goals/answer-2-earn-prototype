@@ -11,6 +11,20 @@ contract Question is LSP8Mintable {
         bool sent;
     }
 
+    event QuestionAsked(
+        address indexed asker,
+        address indexed answerer,
+        bytes32 indexed tokenId,
+        uint256 value,
+        bytes metadataValue
+    );
+
+    event QuestionAnswered(
+        address indexed answerer,
+        bytes32 indexed tokenId,
+        bytes metadataValue
+    );
+
     mapping(bytes32 tokenId => Reward) public rewards;
 
     constructor(
@@ -27,19 +41,26 @@ contract Question is LSP8Mintable {
         )
     {}
 
-    function ask(address recipient, bytes memory metadataValue) public payable {
+    function ask(address answerer, bytes memory metadataValue) public payable {
         require(msg.value > 0, "Value must be greater than 0");
         bytes32 tokenId = keccak256(
             abi.encodePacked(
                 block.timestamp,
                 block.prevrandao,
                 msg.sender,
-                recipient
+                answerer
             )
         );
-        _mint(recipient, tokenId, true, "");
+        _mint(answerer, tokenId, true, "");
         _setDataForTokenId(tokenId, _LSP4_METADATA_KEY, metadataValue);
         rewards[tokenId] = Reward({value: msg.value, sent: false});
+        emit QuestionAsked(
+            msg.sender,
+            answerer,
+            tokenId,
+            msg.value,
+            metadataValue
+        );
     }
 
     function answer(
@@ -61,6 +82,8 @@ contract Question is LSP8Mintable {
 
         // Mark the reward as sent
         rewards[tokenId].sent = true;
+
+        emit QuestionAnswered(msg.sender, tokenId, metadataValue);
     }
 
     function getReward(bytes32 tokenId) public view returns (Reward memory) {
