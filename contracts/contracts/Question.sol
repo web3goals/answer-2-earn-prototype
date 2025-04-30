@@ -27,15 +27,11 @@ contract Question is LSP8Mintable {
 
     mapping(bytes32 tokenId => Reward) public rewards;
 
-    constructor(
-        string memory nftCollectionName,
-        string memory nftCollectionSymbol,
-        address contractOwner
-    )
+    constructor()
         LSP8Mintable(
-            nftCollectionName,
-            nftCollectionSymbol,
-            contractOwner,
+            "Question Token",
+            "QT",
+            msg.sender,
             _LSP4_TOKEN_TYPE_COLLECTION,
             _LSP8_TOKENID_FORMAT_NUMBER
         )

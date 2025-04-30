@@ -10,11 +10,7 @@ describe("Question", function () {
     const [deployer, userOne, userTwo] = await hre.viem.getWalletClients();
 
     // Deploy contracts
-    const questionContract = await hre.viem.deployContract("Question", [
-      "Question Token",
-      "QT",
-      deployer.account.address,
-    ]);
+    const questionContract = await hre.viem.deployContract("Question", []);
 
     return {
       deployer,
