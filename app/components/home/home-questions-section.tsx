@@ -1,8 +1,9 @@
 import { Profile } from "@/types/profile";
+import { Question } from "@/types/question";
 import { CircleAlertIcon, PencilIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { HomeCover } from "./home-cover";
-import { Question } from "@/types/question";
+import { HomeQuestionList } from "./home-question-list";
 
 export function HomeQuestionsSection(props: {
   profile: Profile;
@@ -32,6 +33,10 @@ export function HomeQuestionsSection(props: {
             </Button>
           </>
         }
+      />
+      <HomeQuestionList
+        profile={props.profile}
+        questions={props.questions.filter((q) => !q.reward.sent)}
       />
     </main>
   );
