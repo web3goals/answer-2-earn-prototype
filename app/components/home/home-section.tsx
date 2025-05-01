@@ -20,6 +20,7 @@ export function HomeSection(props: {
         profile={props.profile}
         questions={props.questions}
         onSectionChange={setSection}
+        onQuestionsUpdate={props.onQuestionsUpdate}
       />
     );
   }

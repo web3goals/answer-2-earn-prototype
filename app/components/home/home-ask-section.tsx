@@ -3,9 +3,10 @@ import { chainConfig } from "@/config/chain";
 import { siteConfig } from "@/config/site";
 import useError from "@/hooks/use-error";
 import { useUpProvider } from "@/hooks/use-up-provider";
+import { getEncodedQuestionMetadataValue } from "@/lib/metadata";
 import { Metadata } from "@/types/metadata";
 import { Profile } from "@/types/profile";
-import ERC725 from "@erc725/erc725.js";
+import { Question } from "@/types/question";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import {
@@ -17,7 +18,7 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { createPublicClient, Hex, http, parseEther } from "viem";
+import { createPublicClient, http, parseEther } from "viem";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import {
@@ -37,7 +38,6 @@ import {
   SelectValue,
 } from "../ui/select";
 import { HomeCover } from "./home-cover";
-import { Question } from "@/types/question";
 
 export function HomeAskSection(props: {
   profile: Profile;
@@ -78,7 +78,7 @@ export function HomeAskSection(props: {
         return;
       }
 
-      // Create metadata and upload to IPFS
+      // Create metadata
       const metadata: Metadata = {
         name: "Question Token",
         description: "A token issued by the Answer 2 Earn project",
@@ -108,34 +108,20 @@ export function HomeAskSection(props: {
           },
         ],
       };
+
+      // Upload metadata to IPFS
       const { data } = await axios.post("/api/ipfs", {
         data: JSON.stringify(metadata),
       });
       const metadataUrl = data.data;
-      console.log({ metadataUrl });
 
-      // Encode the metadata using ERC725
-      const schema = [
-        {
-          name: "LSP4Metadata",
-          key: "0x9afb95cacc9f95858ec44aa8c3b685511002e30ae54415823f406128b85b238e",
-          keyType: "Singleton",
-          valueType: "bytes",
-          valueContent: "VerifiableURI",
-        },
-      ];
-      const erc725 = new ERC725(schema);
-      const encodedMetadata = erc725.encodeData([
-        {
-          keyName: "LSP4Metadata",
-          value: {
-            json: metadata,
-            url: metadataUrl,
-          },
-        },
-      ]);
-      const encodedMetadataValue = encodedMetadata.values[0] as Hex;
+      // Encode metadata to get the metadata value
+      const encodedMetadataValue = await getEncodedQuestionMetadataValue(
+        metadata,
+        metadataUrl
+      );
 
+      // Ask the question by calling the smart contract
       const publicClient = createPublicClient({
         chain: chainConfig.chain,
         transport: http(),

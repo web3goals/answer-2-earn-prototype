@@ -7,6 +7,7 @@ import { Profile } from "@/types/profile";
 export function HomeQuestionList(props: {
   profile: Profile;
   questions: Question[];
+  onQuestionsUpdate: () => void;
 }) {
   const groups = [
     {
@@ -38,8 +39,13 @@ export function HomeQuestionList(props: {
           </h2>
           <EntityList<Question>
             entities={group.questions}
-            renderEntityCard={(question) => (
-              <HomeQuestionCard profile={props.profile} question={question} />
+            renderEntityCard={(question, i) => (
+              <HomeQuestionCard
+                key={i}
+                profile={props.profile}
+                question={question}
+                onQuestionUpdate={props.onQuestionsUpdate}
+              />
             )}
             noEntitiesText="No questions with such a reward yet..."
           />

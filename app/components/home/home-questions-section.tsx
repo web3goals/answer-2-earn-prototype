@@ -9,6 +9,7 @@ export function HomeQuestionsSection(props: {
   profile: Profile;
   questions: Question[];
   onSectionChange: (section: "ASK" | "QUESTIONS" | "ANSWERS") => void;
+  onQuestionsUpdate: () => void;
 }) {
   return (
     <main className="container mx-auto px-4 py-4">
@@ -37,6 +38,7 @@ export function HomeQuestionsSection(props: {
       <HomeQuestionList
         profile={props.profile}
         questions={props.questions.filter((q) => !q.reward.sent)}
+        onQuestionsUpdate={props.onQuestionsUpdate}
       />
     </main>
   );

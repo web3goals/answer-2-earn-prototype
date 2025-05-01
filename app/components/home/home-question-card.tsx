@@ -1,24 +1,37 @@
+import useError from "@/hooks/use-error";
 import { useUpProvider } from "@/hooks/use-up-provider";
+import { getQuestionMetadata } from "@/lib/metadata";
+import { getProfile } from "@/lib/profile";
 import { Metadata } from "@/types/metadata";
 import { Profile } from "@/types/profile";
 import { Question } from "@/types/question";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowRightIcon, Loader2Icon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Address } from "viem";
+import { z } from "zod";
+import { Button } from "../ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Skeleton } from "../ui/skeleton";
-import { Address, createPublicClient, http } from "viem";
-import { chainConfig } from "@/config/chain";
-import { questionAbi } from "@/abi/question";
-import useError from "@/hooks/use-error";
-import { getProfile } from "@/lib/profile";
-import ERC725 from "@erc725/erc725.js";
-import axios from "axios";
-import { pinataIpfsToHttp } from "@/lib/ipfs";
-import Link from "next/link";
+import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
 
 export function HomeQuestionCard(props: {
   profile: Profile;
   question: Question;
+  onQuestionUpdate: () => void;
 }) {
   const { handleError } = useError();
   const [questionMetadata, setQuestionMetadata] = useState<
@@ -26,61 +39,25 @@ export function HomeQuestionCard(props: {
   >();
   const [askerProfile, setAskerProfile] = useState<Profile | undefined>();
 
-  async function loadQuestionMetadata() {
-    try {
-      // Load metadata value from the contract
-      const publicClient = createPublicClient({
-        chain: chainConfig.chain,
-        transport: http(),
-      });
-      const metadataValue = await publicClient.readContract({
-        address: chainConfig.contracts.question,
-        abi: questionAbi,
-        functionName: "getDataForTokenId",
-        args: [
-          props.question.id,
-          "0x9afb95cacc9f95858ec44aa8c3b685511002e30ae54415823f406128b85b238e",
-        ],
-      });
-
-      // Decode metadata value to get the metadata URL
-      const schema = [
-        {
-          name: "LSP4Metadata",
-          key: "0x9afb95cacc9f95858ec44aa8c3b685511002e30ae54415823f406128b85b238e",
-          keyType: "Singleton",
-          valueType: "bytes",
-          valueContent: "VerifiableURI",
-        },
-      ];
-      const erc725 = new ERC725(schema);
-      const decodedMetadataValue = erc725.decodeData([
-        {
-          keyName: "LSP4Metadata",
-          value: metadataValue,
-        },
-      ]);
-      const metadataValueUrl = decodedMetadataValue[0]?.value?.url;
-
-      // Load metadata from IPFS
-      const { data } = await axios.get(pinataIpfsToHttp(metadataValueUrl));
-      setQuestionMetadata(data);
-    } catch (error) {
-      handleError(error, "Failed to load question metadata, try again later");
-    }
-  }
-
+  // Load question metadata
   useEffect(() => {
-    loadQuestionMetadata();
+    getQuestionMetadata(props.question.id)
+      .then((metadata) => {
+        setQuestionMetadata(metadata);
+      })
+      .catch((error) => {
+        handleError(error, "Failed to load question metadata, try again later");
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.question]);
 
+  // Load asker profile
   useEffect(() => {
-    const questionAsker = questionMetadata?.attributes?.find(
+    const askerAddress = questionMetadata?.attributes?.find(
       (attr) => attr.trait_type === "Asker"
     )?.value;
-    if (questionAsker) {
-      getProfile(questionAsker as Address)
+    if (askerAddress) {
+      getProfile(askerAddress as Address)
         .then((profile) => setAskerProfile(profile))
         .catch((error) =>
           handleError(error, "Failed to load asker profile, try again later")
@@ -102,6 +79,7 @@ export function HomeQuestionCard(props: {
       <HomeQuestionCardAnswerForm
         profile={props.profile}
         question={props.question}
+        onAnswer={props.onQuestionUpdate}
       />
       <HomeQuestionCardAnswer
         profile={props.profile}
@@ -157,8 +135,48 @@ function HomeQuestionCardQuestion(props: {
 function HomeQuestionCardAnswerForm(props: {
   profile: Profile;
   question: Question;
+  onAnswer: () => void;
 }) {
   const { accounts } = useUpProvider();
+  const { handleError } = useError();
+  const [isProsessing, setIsProsessing] = useState(false);
+
+  const formSchema = z.object({
+    answer: z.string().min(1),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      answer: "",
+    },
+  });
+
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setIsProsessing(true);
+
+      // Send answer to the server
+      await axios.post("/api/answer", {
+        id: props.question.id,
+        answer: values.answer,
+      });
+
+      form.reset();
+      props.onAnswer();
+      toast("Answer verified and posted 🎉");
+    } catch (error) {
+      if (error instanceof AxiosError && error.status === 422) {
+        toast.error(
+          "Failed to verify answer with AI, please try another answer"
+        );
+      } else {
+        handleError(error, "Failed to submit the form, try again later");
+      }
+    } finally {
+      setIsProsessing(false);
+    }
+  }
 
   if (props.question.reward.sent) {
     return <></>;
@@ -171,6 +189,38 @@ function HomeQuestionCardAnswerForm(props: {
   return (
     <div>
       <Separator />
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="space-y-4 mt-4"
+        >
+          <FormField
+            control={form.control}
+            name="answer"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Answer *</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="My dream is..."
+                    disabled={isProsessing}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" variant="default" disabled={isProsessing}>
+            {isProsessing ? (
+              <Loader2Icon className="animate-spin" />
+            ) : (
+              <ArrowRightIcon />
+            )}
+            Post and verify answer with AI
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }
