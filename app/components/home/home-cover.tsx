@@ -1,0 +1,30 @@
+import { Profile } from "@/types/profile";
+import Image from "next/image";
+
+export function HomeCover(props: {
+  profile: Profile;
+  title: string;
+  description: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="bg-primary flex flex-col items-center p-8 rounded-2xl">
+      <div className="size-32 rounded-full overflow-hidden">
+        <Image
+          src={props.profile.image}
+          alt={`${props.profile.name}'s profile picture`}
+          width={96}
+          height={96}
+          className="object-cover w-full h-full"
+        />
+      </div>
+      <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-center text-primary-foreground mt-4">
+        {props.title}
+      </h1>
+      <p className="text-center text-primary-foreground mt-1">
+        {props.description}
+      </p>
+      <div className="mt-8">{props.children}</div>
+    </div>
+  );
+}
