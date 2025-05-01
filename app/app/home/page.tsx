@@ -35,7 +35,12 @@ export default function HomePage() {
   }, [profile]);
 
   if (profile && questions) {
-    return <HomeSection profile={profile} />;
+    return (
+      <HomeSection
+        profile={profile}
+        onQuestionsUpdate={() => console.log("TODO:")}
+      />
+    );
   }
 
   return <LoadingSection />;

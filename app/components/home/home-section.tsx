@@ -4,7 +4,10 @@ import { HomeAskSection } from "./home-ask-section";
 import { HomeQuestionsSection } from "./home-questions-section";
 import { Profile } from "@/types/profile";
 
-export function HomeSection(props: { profile: Profile }) {
+export function HomeSection(props: {
+  profile: Profile;
+  onQuestionsUpdate: () => void;
+}) {
   const [section, setSection] = useState<"ASK" | "QUESTIONS" | "ANSWERS">(
     "ASK"
   );
@@ -28,6 +31,10 @@ export function HomeSection(props: { profile: Profile }) {
   }
 
   return (
-    <HomeAskSection profile={props.profile} onSectionChange={setSection} />
+    <HomeAskSection
+      profile={props.profile}
+      onSectionChange={setSection}
+      onAsk={props.onQuestionsUpdate}
+    />
   );
 }
