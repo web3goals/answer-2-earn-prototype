@@ -3,7 +3,6 @@ import { CircleAlertIcon, CircleHelpIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { HomeCover } from "./home-cover";
 
-// TODO: Display counters
 export function HomeAskSection(props: {
   profile: Profile;
   onSectionChange: (section: "ASK" | "QUESTIONS" | "ANSWERS") => void;
@@ -14,22 +13,24 @@ export function HomeAskSection(props: {
         profile={props.profile}
         title="ASK ME ANYTHING"
         description="Higher reward - higher visibility"
-      >
-        <div className="flex flex-row items-center gap-4">
-          <Button
-            variant="secondary"
-            onClick={() => props.onSectionChange("QUESTIONS")}
-          >
-            <CircleHelpIcon /> Questions (X)
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => props.onSectionChange("ANSWERS")}
-          >
-            <CircleAlertIcon /> Answers (Y)
-          </Button>
-        </div>
-      </HomeCover>
+        actions={
+          // TODO: Display counters
+          <>
+            <Button
+              variant="secondary"
+              onClick={() => props.onSectionChange("QUESTIONS")}
+            >
+              <CircleHelpIcon /> Questions (X)
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => props.onSectionChange("ANSWERS")}
+            >
+              <CircleAlertIcon /> Answers (Y)
+            </Button>
+          </>
+        }
+      />
     </main>
   );
 }

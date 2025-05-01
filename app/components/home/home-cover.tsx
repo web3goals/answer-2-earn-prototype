@@ -5,7 +5,7 @@ export function HomeCover(props: {
   profile: Profile;
   title: string;
   description: string;
-  children?: React.ReactNode;
+  actions?: React.ReactNode;
 }) {
   return (
     <div className="bg-primary flex flex-col items-center p-8 rounded-2xl">
@@ -24,7 +24,9 @@ export function HomeCover(props: {
       <p className="text-center text-primary-foreground mt-1">
         {props.description}
       </p>
-      <div className="mt-8">{props.children}</div>
+      <div className="flex flex-row items-center gap-2 mt-8">
+        {props.actions}
+      </div>
     </div>
   );
 }
