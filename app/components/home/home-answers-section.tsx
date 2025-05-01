@@ -1,13 +1,15 @@
 import { Profile } from "@/types/profile";
+import { Question } from "@/types/question";
 import { CircleHelpIcon, PencilIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { HomeCover } from "./home-cover";
-import { Question } from "@/types/question";
+import { HomeQuestionList } from "./home-question-list";
 
 export function HomeAnswersSection(props: {
   profile: Profile;
   questions: Question[];
   onSectionChange: (section: "ASK" | "QUESTIONS" | "ANSWERS") => void;
+  onQuestionsUpdate: () => void;
 }) {
   return (
     <main className="container mx-auto px-4 py-4">
@@ -32,7 +34,12 @@ export function HomeAnswersSection(props: {
             </Button>
           </>
         }
-      ></HomeCover>
+      />
+      <HomeQuestionList
+        profile={props.profile}
+        questions={props.questions.filter((q) => q.reward.sent)}
+        onQuestionsUpdate={props.onQuestionsUpdate}
+      />
     </main>
   );
 }

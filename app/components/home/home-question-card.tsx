@@ -6,13 +6,16 @@ import { Metadata } from "@/types/metadata";
 import { Profile } from "@/types/profile";
 import { Question } from "@/types/question";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRightIcon, Loader2Icon } from "lucide-react";
+import axios, { AxiosError } from "axios";
+import { ArrowRightIcon, CheckIcon, Loader2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Address } from "viem";
 import { z } from "zod";
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
   Form,
@@ -25,8 +28,6 @@ import {
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Skeleton } from "../ui/skeleton";
-import axios, { AxiosError } from "axios";
-import { toast } from "sonner";
 
 export function HomeQuestionCard(props: {
   profile: Profile;
@@ -125,13 +126,14 @@ function HomeQuestionCardQuestion(props: {
         <p className="text-muted-foreground text-sm">
           {new Date(questionDate as string).toLocaleString()}
         </p>
-        <h4 className="text-xl tracking-tight mt-1">{questionText}</h4>
+        <h4 className="text-xl font-semibold tracking-tight mt-1">
+          {questionText}
+        </h4>
       </div>
     </div>
   );
 }
 
-// TODO:
 function HomeQuestionCardAnswerForm(props: {
   profile: Profile;
   question: Question;
@@ -225,7 +227,6 @@ function HomeQuestionCardAnswerForm(props: {
   );
 }
 
-// TODO:
 function HomeQuestionCardAnswer(props: {
   profile: Profile;
   questionMetadata: Metadata;
@@ -244,9 +245,29 @@ function HomeQuestionCardAnswer(props: {
   return (
     <div>
       <Separator />
-      <div>{props.profile.image}</div>
-      <div>{answerDate}</div>
-      <div>{answerText}</div>
+      <div className="flex flex-row gap-4 mt-4">
+        {/* Left part */}
+        <div className="size-10 rounded-full overflow-hidden">
+          <Image
+            src={props.profile.image}
+            alt={`${props.profile.name}'s profile picture`}
+            width={96}
+            height={96}
+            className="w-full h-full"
+          />
+        </div>
+        {/* Right part */}
+        <div className="flex-1">
+          <p className="text-muted-foreground text-sm">
+            {new Date(answerDate as string).toLocaleString()}
+          </p>
+          <h4 className="text-xl mt-1">{answerText}</h4>
+          <Badge variant="secondary" className="mt-2">
+            <CheckIcon />
+            <p>Answer verified by AI</p>
+          </Badge>
+        </div>
+      </div>
     </div>
   );
 }
