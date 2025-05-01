@@ -15,7 +15,7 @@ export function HomeCover(props: {
           alt={`${props.profile.name}'s profile picture`}
           width={96}
           height={96}
-          className="object-cover w-full h-full"
+          className="w-full h-full"
         />
       </div>
       <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-center text-primary-foreground mt-4">
