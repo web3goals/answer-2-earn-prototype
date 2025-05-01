@@ -2,9 +2,11 @@ import { Profile } from "@/types/profile";
 import { CircleHelpIcon, PencilIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { HomeCover } from "./home-cover";
+import { Question } from "@/types/question";
 
 export function HomeAnswersSection(props: {
   profile: Profile;
+  questions: Question[];
   onSectionChange: (section: "ASK" | "QUESTIONS" | "ANSWERS") => void;
 }) {
   return (
@@ -14,13 +16,12 @@ export function HomeAnswersSection(props: {
         title="YOUR ANSWERS"
         description="Higher reward - higher visibility"
         actions={
-          // TODO: Display counters
           <>
             <Button
               variant="secondary"
               onClick={() => props.onSectionChange("QUESTIONS")}
             >
-              <CircleHelpIcon /> Questions (X)
+              <CircleHelpIcon /> Questions — {props.questions.length}
             </Button>
             <Button
               variant="secondary"

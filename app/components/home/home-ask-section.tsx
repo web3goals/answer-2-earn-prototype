@@ -37,9 +37,11 @@ import {
   SelectValue,
 } from "../ui/select";
 import { HomeCover } from "./home-cover";
+import { Question } from "@/types/question";
 
 export function HomeAskSection(props: {
   profile: Profile;
+  questions: Question[];
   onSectionChange: (section: "ASK" | "QUESTIONS" | "ANSWERS") => void;
   onAsk: () => void;
 }) {
@@ -166,19 +168,19 @@ export function HomeAskSection(props: {
         title="ASK ME ANYTHING"
         description="Higher reward - higher visibility"
         actions={
-          // TODO: Display counters
           <>
             <Button
               variant="secondary"
               onClick={() => props.onSectionChange("QUESTIONS")}
             >
-              <CircleHelpIcon /> Questions (X)
+              <CircleHelpIcon /> Questions — {props.questions.length}
             </Button>
             <Button
               variant="secondary"
               onClick={() => props.onSectionChange("ANSWERS")}
             >
-              <CircleAlertIcon /> Answers (Y)
+              <CircleAlertIcon /> Answers —{" "}
+              {props.questions.filter((q) => q.reward.sent).length}
             </Button>
           </>
         }
