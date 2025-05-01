@@ -21,7 +21,8 @@ export function HomeAnswersSection(props: {
               variant="secondary"
               onClick={() => props.onSectionChange("QUESTIONS")}
             >
-              <CircleHelpIcon /> Questions — {props.questions.length}
+              <CircleHelpIcon /> Questions —{" "}
+              {props.questions.filter((q) => !q.reward.sent).length}
             </Button>
             <Button
               variant="secondary"
