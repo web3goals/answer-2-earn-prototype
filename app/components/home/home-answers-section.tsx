@@ -3,7 +3,7 @@ import { Question } from "@/types/question";
 import { CircleHelpIcon, PencilIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { HomeCover } from "./home-cover";
-import { HomeQuestionList } from "./home-question-list";
+import { QuestionList } from "../questions/question-list";
 
 export function HomeAnswersSection(props: {
   profile: Profile;
@@ -35,7 +35,7 @@ export function HomeAnswersSection(props: {
           </>
         }
       />
-      <HomeQuestionList
+      <QuestionList
         profile={props.profile}
         questions={props.questions.filter((q) => q.reward.sent)}
         onQuestionsUpdate={props.onQuestionsUpdate}

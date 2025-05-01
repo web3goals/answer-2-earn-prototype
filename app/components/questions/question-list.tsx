@@ -1,10 +1,10 @@
 import { Question } from "@/types/question";
 import { parseEther } from "viem";
 import EntityList from "../entity-list";
-import { HomeQuestionCard } from "./home-question-card";
+import { QuestionCard } from "./question-card";
 import { Profile } from "@/types/profile";
 
-export function HomeQuestionList(props: {
+export function QuestionList(props: {
   profile: Profile;
   questions: Question[];
   onQuestionsUpdate: () => void;
@@ -40,7 +40,7 @@ export function HomeQuestionList(props: {
           <EntityList<Question>
             entities={group.questions}
             renderEntityCard={(question, i) => (
-              <HomeQuestionCard
+              <QuestionCard
                 key={i}
                 profile={props.profile}
                 question={question}
