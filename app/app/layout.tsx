@@ -1,3 +1,4 @@
+import { UpProvider } from "@/components/up-provider";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
@@ -39,7 +40,7 @@ export default function RootLayout({
           geistMono.variable
         )}
       >
-        {children}
+        <UpProvider>{children}</UpProvider>
       </body>
     </html>
   );
