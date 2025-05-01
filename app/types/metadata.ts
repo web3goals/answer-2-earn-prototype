@@ -1,11 +1,13 @@
-import { Address } from "viem";
+export type Attribute = {
+  trait_type: string;
+  value: string | number;
+  display_type?: string;
+};
 
 export type Metadata = {
-  asker: Address;
-  question: string;
-  questionDate: number;
-  reward: string;
-  answerer: Address;
-  answer?: string;
-  answerDate?: number;
+  name: string;
+  description: string;
+  image: string;
+  external_url?: string;
+  attributes?: Attribute[];
 };

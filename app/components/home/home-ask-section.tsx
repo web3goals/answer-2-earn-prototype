@@ -1,5 +1,6 @@
 import { questionAbi } from "@/abi/question";
 import { chainConfig } from "@/config/chain";
+import { siteConfig } from "@/config/site";
 import useError from "@/hooks/use-error";
 import { useUpProvider } from "@/hooks/use-up-provider";
 import { Metadata } from "@/types/metadata";
@@ -63,10 +64,6 @@ export function HomeAskSection(props: {
     try {
       setIsProsessing(true);
 
-      console.log("client", client);
-      console.log("walletConnected", walletConnected);
-      console.log("accounts", accounts);
-
       // Check if the user is connected to the wallet and the correct network
       if (!client || !walletConnected) {
         toast.warning("Please connect your wallet first");
@@ -81,11 +78,33 @@ export function HomeAskSection(props: {
 
       // Create metadata and upload to IPFS
       const metadata: Metadata = {
-        asker: accounts[0],
-        question: values.question,
-        questionDate: new Date().getTime(),
-        reward: parseEther(values.reward).toString(),
-        answerer: props.profile.address,
+        name: "Question Token",
+        description: "A token issued by the Answer 2 Earn project",
+        external_url: siteConfig.links.github,
+        image:
+          "ipfs://bafkreiahpktywfs64j6fpdu7cyl4yifj4ivxvudge3zuv7sga6qh3x7h74",
+        attributes: [
+          {
+            trait_type: "Asker",
+            value: accounts[0],
+          },
+          {
+            trait_type: "Question",
+            value: values.question,
+          },
+          {
+            trait_type: "Question Date",
+            value: new Date().getTime(),
+          },
+          {
+            trait_type: "Reward",
+            value: parseEther(values.reward).toString(),
+          },
+          {
+            trait_type: "Answerer",
+            value: props.profile.address,
+          },
+        ],
       };
       const { data } = await axios.post("/api/ipfs", {
         data: JSON.stringify(metadata),
