@@ -167,7 +167,11 @@ export function QuestionAskForm(props: {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Reward *</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={isProsessing}
+              >
                 <FormControl className="w-full">
                   <SelectTrigger>
                     <SelectValue placeholder="Select a reward" />
