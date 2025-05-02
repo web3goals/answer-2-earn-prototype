@@ -1,28 +1,10 @@
-"use client";
-
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
-import { CopyIcon, ExternalLinkIcon } from "lucide-react";
+import { ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import useError from "@/hooks/use-error";
 
 export default function LandingPage() {
-  const { handleError } = useError();
-  const [copied, setCopied] = useState(false);
-  const miniAppUrl = "https://answer-2-earn.vercel.app/home";
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(miniAppUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch (error) {
-      handleError(error, "Failed to copy, try again later");
-    }
-  };
-
   return (
     <main className="max-w-lg min-h-screen flex flex-col items-center justify-center mx-auto px-4 py-8">
       {/* Cover */}
@@ -59,20 +41,11 @@ export default function LandingPage() {
           </Link>{" "}
           (LUKSO Tesnet)
         </p>
-        <div className="bg-background border rounded-lg px-4 py-3 mt-4">
+        <div className="bg-background border border-primary rounded-lg px-4 py-3 mt-4">
           <p className="text-center text-muted-foreground">
             https://answer-2-earn.vercel.app/home
           </p>
         </div>
-        <Button
-          className="mt-2"
-          onClick={handleCopy}
-          disabled={copied}
-          type="button"
-        >
-          <CopyIcon />
-          {copied ? "Copied!" : "Copy"}
-        </Button>
         <h2 className="text-3xl font-semibold tracking-tight text-center mt-8">
           OR
         </h2>
