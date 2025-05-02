@@ -4,6 +4,7 @@ import { CircleAlertIcon, CircleHelpIcon } from "lucide-react";
 import { QuestionAskForm } from "../questions/question-ask-form";
 import { Button } from "../ui/button";
 import { HomeCover } from "./home-cover";
+import { HomeFooter } from "./home-footer";
 
 export function HomeAskSection(props: {
   profile: Profile;
@@ -37,6 +38,7 @@ export function HomeAskSection(props: {
         }
       />
       <QuestionAskForm profile={props.profile} onAsk={props.onAsk} />
+      <HomeFooter />
     </main>
   );
 }

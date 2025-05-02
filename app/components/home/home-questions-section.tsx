@@ -4,6 +4,7 @@ import { CircleAlertIcon, PencilIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { HomeCover } from "./home-cover";
 import { QuestionList } from "../questions/question-list";
+import { HomeFooter } from "./home-footer";
 
 export function HomeQuestionsSection(props: {
   profile: Profile;
@@ -40,6 +41,7 @@ export function HomeQuestionsSection(props: {
         questions={props.questions.filter((q) => !q.reward.sent)}
         onQuestionsUpdate={props.onQuestionsUpdate}
       />
+      <HomeFooter />
     </main>
   );
 }
