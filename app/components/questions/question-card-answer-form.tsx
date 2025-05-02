@@ -1,3 +1,4 @@
+import { chainConfig } from "@/config/chain";
 import useError from "@/hooks/use-error";
 import { useUpProvider } from "@/hooks/use-up-provider";
 import { Profile } from "@/types/profile";
@@ -46,14 +47,24 @@ export function QuestionCardAnswerForm(props: {
       setIsProsessing(true);
 
       // Send answer to the server
-      await axios.post("/api/answer", {
+      const { data } = await axios.post("/api/answer", {
         id: props.question.id,
         answer: values.answer,
       });
 
       form.reset();
       props.onAnswer();
-      toast("Answer verified and posted 🎉");
+      toast("Answer verified and posted 🎉", {
+        action: {
+          label: "Transaction",
+          onClick: () => {
+            window.open(
+              chainConfig.chain.blockExplorers.default.url + "/tx/" + data.data,
+              "_blank"
+            );
+          },
+        },
+      });
     } catch (error) {
       if (error instanceof AxiosError && error.status === 422) {
         toast.error(

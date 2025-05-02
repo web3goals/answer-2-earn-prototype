@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
     await publicClient.waitForTransactionReceipt({ hash });
 
     // Return success response
-    return createSuccessApiResponse("Answer posted");
+    return createSuccessApiResponse(hash);
   } catch (error) {
     console.error(
       `Failed to process ${request.method} request for "${
