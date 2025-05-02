@@ -44,7 +44,7 @@ export async function getQuestionMetadata(questionId: Hex): Promise<Metadata> {
   // Define metadata HTTP URL
   const metadataHttpUrl = pinataIpfsToHttp(metadataValueUrl);
   if (!metadataHttpUrl) {
-    throw new Error("Invalid metadata URL");
+    throw new Error("Invalid metadata HTTP URL");
   }
 
   // Load metadata from IPFS
