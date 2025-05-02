@@ -19,7 +19,7 @@ export function QuestionCardQuestion(props: {
       {/* Left part */}
       <div className="size-16 rounded-full overflow-hidden">
         <Image
-          src={props.askerProfile.image}
+          src={props.askerProfile.image || "/images/user.png"}
           alt={`${props.askerProfile.name}'s profile picture`}
           width={96}
           height={96}

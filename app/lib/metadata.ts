@@ -41,8 +41,14 @@ export async function getQuestionMetadata(questionId: Hex): Promise<Metadata> {
   ]);
   const metadataValueUrl = decodedMetadataValue[0]?.value?.url;
 
+  // Define metadata HTTP URL
+  const metadataHttpUrl = pinataIpfsToHttp(metadataValueUrl);
+  if (!metadataHttpUrl) {
+    throw new Error("Invalid metadata URL");
+  }
+
   // Load metadata from IPFS
-  const { data } = await axios.get(pinataIpfsToHttp(metadataValueUrl));
+  const { data } = await axios.get(metadataHttpUrl);
 
   return data as Metadata;
 }

@@ -11,7 +11,7 @@ export function HomeCover(props: {
     <div className="bg-primary flex flex-col items-center p-8 rounded-2xl">
       <div className="size-32 rounded-full overflow-hidden">
         <Image
-          src={props.profile.image}
+          src={props.profile.image || "/images/user.png"}
           alt={`${props.profile.name}'s profile picture`}
           width={96}
           height={96}

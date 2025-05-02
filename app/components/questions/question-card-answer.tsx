@@ -27,7 +27,7 @@ export function QuestionCardAnswer(props: {
         {/* Left part */}
         <div className="size-10 rounded-full overflow-hidden">
           <Image
-            src={props.profile.image}
+            src={props.profile.image || "/images/user.png"}
             alt={`${props.profile.name}'s profile picture`}
             width={96}
             height={96}
