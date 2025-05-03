@@ -36,7 +36,7 @@ The Mini-App facilitates a question-and-answer interaction between users (Askers
 ## 🔗 Artifacts
 
 - Application - https://answer-2-earn.vercel.app/
-- Demo - https://universaleverything.io/0xfcC5eC941E2C26FF618A8a975D9262Cd887d9c15?network=testnet
+- Demo - https://universaleverything.io/0x4477F2aB1660b18a2bCa34cC0D6Da28E340DD90e?network=testnet
 - Contracts (LUKSO Testnet):
   - Question - `0xf81abf7d2d09369cda771f4b432ef01e75576759`
 
