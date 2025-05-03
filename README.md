@@ -6,7 +6,28 @@ Answer fan questions, earn LYX rewards — a LUKSO Mini-App with AI verification
 
 ## 🛠️ How it works
 
-...
+The Mini-App facilitates a question-and-answer interaction between users (Askers and Answerers) on the LUKSO Testnet, leveraging Universal Profiles and smart contracts.
+
+- **Setup (Answerer)**
+
+  - The Answerer obtains the Mini-App link and integrates it into their Universal Profile grid.
+
+- **Asking a Question (Asker)**
+
+  - The Asker navigates to the Answerer's profile on Universal Everything.
+  - Connects their Universal Profile to the Mini-App using `@up-provider`.
+  - Submits a question including text and a selected reward amount (0.01, 0.05, or 0.1 LYX).
+  - The backend generates LSP8 token metadata for the question using `erc725.js` and uploads it to Pinata IPFS.
+  - An LSP8 token representing the question is minted via the `Question` smart contract on the LUKSO Testnet.
+
+- **Answering a Question (Answerer)**
+
+  - The Answerer accesses the Mini-App through their Universal Profile.
+  - Connects their Universal Profile using `@up-provider`.
+  - Views a list of unanswered questions, sortable by reward amount.
+  - Selects and submits an answer to a chosen question.
+  - An AI service (Gemini 2.5 Flash) verifies if the answer is relevant to the question.
+  - If the answer is valid, the `Question` smart contract transfers the specified LYX reward to the Answerer's Universal Profile.
 
 ## 🔗 Artifacts
 
