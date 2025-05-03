@@ -4,6 +4,10 @@
 
 Answer fan questions, earn LYX rewards — a LUKSO Mini-App with AI verification.
 
+## ✨ Background
+
+In the past, personal question and answer apps have been popular and viral. The largest one, ask.fm, had 50 million monthly active users. With the capabilities of Lukso and AI, this idea can be improved and achieve greater performance.
+
 ## 🛠️ How it works
 
 The Mini-App facilitates a question-and-answer interaction between users (Askers and Answerers) on the LUKSO Testnet, leveraging Universal Profiles and smart contracts.
