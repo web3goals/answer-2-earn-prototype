@@ -19,8 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
+import { Textarea } from "../ui/textarea";
 
 export function QuestionCardAnswerForm(props: {
   profile: Profile;
@@ -101,7 +101,7 @@ export function QuestionCardAnswerForm(props: {
               <FormItem>
                 <FormLabel>Answer *</FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
                     placeholder="My dream is..."
                     disabled={isProsessing}
                     {...field}

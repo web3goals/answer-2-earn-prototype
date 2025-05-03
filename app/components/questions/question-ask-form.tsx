@@ -23,7 +23,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
@@ -31,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Textarea } from "../ui/textarea";
 
 export function QuestionAskForm(props: {
   profile: Profile;
@@ -151,7 +151,7 @@ export function QuestionAskForm(props: {
             <FormItem>
               <FormLabel>Question *</FormLabel>
               <FormControl>
-                <Input
+                <Textarea
                   placeholder="What’s your dream?"
                   disabled={isProsessing}
                   {...field}
