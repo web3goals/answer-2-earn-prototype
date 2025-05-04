@@ -2,6 +2,7 @@ import { questionAbi } from "@/abi/question";
 import { chainConfig } from "@/config/chain";
 import { createFailedApiResponse, createSuccessApiResponse } from "@/lib/api";
 import { errorToString } from "@/lib/converters";
+import { verifyLlmAnswer } from "@/lib/llm";
 import {
   getEncodedQuestionMetadataValue,
   getQuestionMetadata,
@@ -31,10 +32,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify answer using AI
-    // TODO:
-    const aiVerified = true;
-    if (!aiVerified) {
+    // Get metadata and question
+    const metadata = await getQuestionMetadata(bodyParseResult.data.id as Hex);
+    const question = metadata.attributes?.find(
+      (attr) => attr.trait_type === "Question"
+    )?.value;
+    if (!question) {
+      return createFailedApiResponse(
+        { message: "Question not found in metadata" },
+        404
+      );
+    }
+
+    // Verify answer using LLM
+    const verified = await verifyLlmAnswer(
+      question as string,
+      bodyParseResult.data.answer
+    );
+    if (!verified) {
       return createFailedApiResponse(
         { message: "Failed to verify answer with AI" },
         422
@@ -42,7 +57,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Update metadata with the answer
-    const metadata = await getQuestionMetadata(bodyParseResult.data.id as Hex);
     metadata.attributes = [
       ...(metadata.attributes || []),
       ...[
