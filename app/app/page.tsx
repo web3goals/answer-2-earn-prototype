@@ -60,7 +60,7 @@ export default function LandingPage() {
           (LUKSO Tesnet)
         </p>
         <Link
-          href="https://universaleverything.io/0xfcC5eC941E2C26FF618A8a975D9262Cd887d9c15?network=testnet"
+          href="https://universaleverything.io/0x4477F2aB1660b18a2bCa34cC0D6Da28E340DD90e?network=testnet&assetGroup=grid"
           target="_blank"
         >
           <Button className="mt-4">
