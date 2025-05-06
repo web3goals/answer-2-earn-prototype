@@ -50,13 +50,7 @@ export default function LandingPage() {
           OR
         </h2>
         <p className="text-center mt-2">
-          Clone the Mini-Application from our profile on{" "}
-          <Link
-            href="https://universaleverything.io/?network=testnet"
-            target="_blank"
-          >
-            <span className="text-primary">Universal Everything</span>
-          </Link>{" "}
+          Clone the Mini-Application from our profile on Universal Everything
           (LUKSO Tesnet)
         </p>
         <Link
