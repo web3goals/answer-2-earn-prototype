@@ -41,7 +41,8 @@ export function UpProvider({ children }: UpProviderProps) {
   const client = useMemo(() => {
     if (provider && chainId) {
       return createWalletClient({
-        chain: chainId === 42 ? lukso : luksoTestnet,
+        chain:
+          chainId === 42 || String(chainId) === "0x2a" ? lukso : luksoTestnet,
         transport: custom(provider),
       });
     }

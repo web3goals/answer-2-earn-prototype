@@ -10,7 +10,7 @@ In the past, personal question and answer apps have been popular and viral. The 
 
 ## 🛠️ How it works
 
-The Mini-App facilitates a question-and-answer interaction between users (Askers and Answerers) on the LUKSO Testnet, leveraging Universal Profiles and smart contracts.
+The Mini-App facilitates a question-and-answer interaction between users (Askers and Answerers) on the LUKSO Mainnet, leveraging Universal Profiles and smart contracts.
 
 - **Setup (Answerer)**
 
@@ -22,7 +22,7 @@ The Mini-App facilitates a question-and-answer interaction between users (Askers
   - Connects their Universal Profile to the Mini-App using `@up-provider`.
   - Submits a question including text and a selected reward amount (0.01, 0.05, or 0.1 LYX).
   - The backend generates LSP8 token metadata for the question using `erc725.js` and uploads it to Pinata IPFS.
-  - An LSP8 token representing the question is minted via the `Question` smart contract on the LUKSO Testnet.
+  - An LSP8 token representing the question is minted via the `Question` smart contract on the LUKSO Mainnet.
 
 - **Answering a Question (Answerer)**
 
@@ -36,14 +36,14 @@ The Mini-App facilitates a question-and-answer interaction between users (Askers
 ## 🔗 Artifacts
 
 - Application - https://answer-2-earn.vercel.app/
-- Demo - https://universaleverything.io/0x4477F2aB1660b18a2bCa34cC0D6Da28E340DD90e?network=testnet&assetGroup=grid
-- Contracts (LUKSO Testnet):
-  - Question - https://explorer.execution.testnet.lukso.network/address/0x4eca13c538d53b9adecf872c66a4db6ff98b0074
+- Demo - https://universaleverything.io/0x4018737e0D777b3d4C72B411a3BeEC286Ec5F5eF?assetGroup=grid
+- Contracts (LUKSO Mainnet):
+  - Question - https://explorer.execution.mainnet.lukso.network/address/0xf81abf7d2d09369cda771f4b432ef01e75576759#code
 
 ## 🛠️ Technologies
 
 - LSP8 standard is used for a contract that stores questions and sends rewards for answers.
-- LUKSO Testnet is used as a blockchain for development and beta testing.
+- LUKSO Mainnet is used as a blockchain for development and beta testing.
 - Universal Profiles is used to make the app more social by displaying profile pictures and usernames.
 - @up-provider is used as a tool to integrate the app with the LUKSO grid.
 - erc725.js library is used to encode and decode profile and question metadata.

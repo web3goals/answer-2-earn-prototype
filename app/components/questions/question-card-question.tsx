@@ -29,7 +29,7 @@ export function QuestionCardQuestion(props: {
       {/* Right part */}
       <div className="flex-1">
         <Link
-          href={`https://universaleverything.io/${props.askerProfile.address}?network=testnet`}
+          href={`https://universaleverything.io/${props.askerProfile.address}`}
           target="_blank"
         >
           <p className="text-primary font-semibold text-sm text">

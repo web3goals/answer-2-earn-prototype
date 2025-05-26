@@ -33,10 +33,7 @@ export default function LandingPage() {
         </h2>
         <p className="text-center mt-2">
           Add the following Mini-App to your grid on{" "}
-          <Link
-            href="https://universaleverything.io/?network=testnet"
-            target="_blank"
-          >
+          <Link href="https://universaleverything.io/" target="_blank">
             <span className="text-primary">Universal Everything</span>
           </Link>{" "}
           (LUKSO Tesnet)
@@ -54,7 +51,7 @@ export default function LandingPage() {
           (LUKSO Tesnet)
         </p>
         <Link
-          href="https://universaleverything.io/0x4477F2aB1660b18a2bCa34cC0D6Da28E340DD90e?network=testnet&assetGroup=grid"
+          href="https://universaleverything.io/0x4018737e0D777b3d4C72B411a3BeEC286Ec5F5eF?assetGroup=grid"
           target="_blank"
         >
           <Button className="mt-4">

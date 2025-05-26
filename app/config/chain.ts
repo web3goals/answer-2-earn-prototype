@@ -1,9 +1,9 @@
 import { Address } from "viem";
-import { luksoTestnet } from "viem/chains";
+import { lukso } from "viem/chains";
 
 export const chainConfig = {
-  chain: luksoTestnet,
+  chain: lukso,
   contracts: {
-    question: "0x4eca13c538d53b9adecf872c66a4db6ff98b0074" as Address,
+    question: "0xf81abf7d2d09369cda771f4b432ef01e75576759" as Address,
   },
 };
