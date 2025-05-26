@@ -25,7 +25,7 @@ describe("Question", function () {
   }
 
   it("Should ask and answer a question", async function () {
-    const { publicClient, userOne, userTwo, questionContract } =
+    const { publicClient, deployer, userOne, userTwo, questionContract } =
       await loadFixture(initFixture);
 
     // Create a metadata object
@@ -96,9 +96,9 @@ describe("Question", function () {
     expect(rewardBefore.value).to.equal(parseEther("1"));
     expect(rewardBefore.sent).to.equal(false);
 
-    // Answer question
+    // Answer question by deployer
     await questionContract.write.answer([token, "0x0"], {
-      account: userOne.account,
+      account: deployer.account,
     });
 
     // Check reward after answering
@@ -110,15 +110,9 @@ describe("Question", function () {
     const userOneBalanceAfter = await publicClient.getBalance({
       address: userOne.account.address,
     });
-
-    // Check that the user's balance increased by the reward amount (minus gas costs)
-    const balanceIncrease = userOneBalanceAfter - userOneBalanceBefore;
-    const rewardAmount = parseEther("1");
-    const allowableDifference = parseEther("0.01");
-    expect(
-      balanceIncrease >= rewardAmount - allowableDifference &&
-        balanceIncrease <= rewardAmount + allowableDifference
-    ).to.be.true;
+    expect(userOneBalanceAfter - userOneBalanceBefore).to.be.equal(
+      parseEther("1")
+    );
   });
 
   it("Should ask and cancel a question", async function () {

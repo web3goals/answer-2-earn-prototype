@@ -79,20 +79,16 @@ contract Question is LSP8Mintable, ReentrancyGuard {
             metadataValue
         );
     }
-
     /**
-     * @dev Answer a question and receive the reward.
+     * @dev Answer a question and send the reward to the answerer.
+     * @notice This function can only be called by the contract owner.
      * @param tokenId The ID of the question token.
      * @param metadataValue The metadata of the answer.
      */
     function answer(
         bytes32 tokenId,
         bytes memory metadataValue
-    ) public nonReentrant {
-        require(
-            tokenOwnerOf(tokenId) == msg.sender,
-            "Only token owner can answer"
-        );
+    ) public nonReentrant onlyOwner {
         require(!rewards[tokenId].sent, "Reward already sent");
 
         // Update the state before external call
@@ -101,11 +97,13 @@ contract Question is LSP8Mintable, ReentrancyGuard {
         // Update the metadata for the token
         _setDataForTokenId(tokenId, _LSP4_METADATA_KEY, metadataValue);
 
-        // Transfer the reward to the answerer (msg.sender)
-        (bool success, ) = msg.sender.call{value: rewards[tokenId].value}("");
+        // Transfer the reward to the answerer
+        (bool success, ) = tokenOwnerOf(tokenId).call{
+            value: rewards[tokenId].value
+        }("");
         require(success, "Transfer failed");
 
-        emit QuestionAnswered(msg.sender, tokenId, metadataValue);
+        emit QuestionAnswered(tokenOwnerOf(tokenId), tokenId, metadataValue);
     }
 
     /**
