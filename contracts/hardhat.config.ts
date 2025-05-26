@@ -20,10 +20,15 @@ const config: HardhatUserConfig = {
       url: "https://rpc.testnet.lukso.network",
       accounts: [process.env.PRIVATE_KEY as string],
     },
+    luksoMainnet: {
+      url: "https://rpc.mainnet.lukso.network",
+      accounts: [process.env.PRIVATE_KEY as string],
+    },
   },
   etherscan: {
     apiKey: {
       luksoTestnet: "empty",
+      luksoMainnet: "empty",
     },
     customChains: [
       {
@@ -32,6 +37,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api.explorer.execution.testnet.lukso.network/api",
           browserURL: "https://explorer.execution.testnet.lukso.network",
+        },
+      },
+      {
+        network: "luksoMainnet",
+        chainId: 42,
+        urls: {
+          apiURL: "https://explorer.execution.mainnet.lukso.network/api",
+          browserURL: "https://explorer.execution.mainnet.lukso.network",
         },
       },
     ],
