@@ -6,6 +6,9 @@ import { Hex, parseEther } from "viem";
 
 describe("Question", function () {
   async function initFixture() {
+    // Get public client
+    const publicClient = await hre.viem.getPublicClient();
+
     // Get signers
     const [deployer, userOne, userTwo] = await hre.viem.getWalletClients();
 
@@ -13,6 +16,7 @@ describe("Question", function () {
     const questionContract = await hre.viem.deployContract("Question", []);
 
     return {
+      publicClient,
       deployer,
       userOne,
       userTwo,
@@ -21,9 +25,8 @@ describe("Question", function () {
   }
 
   it("Should ask and answer a question", async function () {
-    const { deployer, userOne, userTwo, questionContract } = await loadFixture(
-      initFixture
-    );
+    const { publicClient, userOne, userTwo, questionContract } =
+      await loadFixture(initFixture);
 
     // Create a metadata object
     const metadata = {
@@ -83,6 +86,11 @@ describe("Question", function () {
       },
     ]);
 
+    // Check user balance before answering
+    const userOneBalanceBefore = await publicClient.getBalance({
+      address: userOne.account.address,
+    });
+
     // Check reward before answering
     const rewardBefore = await questionContract.read.getReward([token]);
     expect(rewardBefore.value).to.equal(parseEther("1"));
@@ -97,5 +105,19 @@ describe("Question", function () {
     const rewardAfter = await questionContract.read.getReward([token]);
     expect(rewardAfter.value).to.equal(parseEther("1"));
     expect(rewardAfter.sent).to.equal(true);
+
+    // Check user balance after answering
+    const userOneBalanceAfter = await publicClient.getBalance({
+      address: userOne.account.address,
+    });
+
+    // Check that the user's balance increased by the reward amount (minus gas costs)
+    const balanceIncrease = userOneBalanceAfter - userOneBalanceBefore;
+    const rewardAmount = parseEther("1");
+    const allowableDifference = parseEther("0.01");
+    expect(
+      balanceIncrease >= rewardAmount - allowableDifference &&
+        balanceIncrease <= rewardAmount + allowableDifference
+    ).to.be.true;
   });
 });
