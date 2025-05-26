@@ -451,6 +451,31 @@ export const questionAbi = [
     inputs: [
       {
         indexed: true,
+        internalType: "address",
+        name: "asker",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "tokenId",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "value",
+        type: "uint256",
+      },
+    ],
+    name: "QuestionCancelled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "bytes32",
         name: "tokenId",
         type: "bytes32",
@@ -557,6 +582,25 @@ export const questionAbi = [
   {
     inputs: [
       {
+        internalType: "bytes32",
+        name: "tokenId",
+        type: "bytes32",
+      },
+    ],
+    name: "askers",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "operator",
         type: "address",
@@ -613,6 +657,38 @@ export const questionAbi = [
       },
     ],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "tokenId",
+        type: "bytes32",
+      },
+    ],
+    name: "cancelQuestion",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "tokenId",
+        type: "bytes32",
+      },
+    ],
+    name: "getAsker",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
