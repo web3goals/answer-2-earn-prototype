@@ -6,6 +6,6 @@ export const CONTRACTS: {
   };
 } = {
   luksoTestnet: {
-    question: "0xf81abf7d2d09369cda771f4b432ef01e75576759",
+    question: "0x4eca13c538d53b9adecf872c66a4db6ff98b0074",
   },
 };
