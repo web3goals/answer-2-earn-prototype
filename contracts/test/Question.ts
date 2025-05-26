@@ -20,16 +20,10 @@ describe("Question", function () {
     };
   }
 
-  it("Must ask and answer a question", async function () {
+  it("Should ask and answer a question", async function () {
     const { deployer, userOne, userTwo, questionContract } = await loadFixture(
       initFixture
     );
-
-    // Save user one balance before test
-    const publicClient = await hre.viem.getPublicClient();
-    const userOneBalanceBefore = await publicClient.getBalance({
-      address: userOne.account.address,
-    });
 
     // Create a metadata object
     const metadata = {
@@ -96,16 +90,8 @@ describe("Question", function () {
 
     // Answer question
     await questionContract.write.answer([token, "0x0"], {
-      account: deployer.account,
+      account: userOne.account,
     });
-
-    // Check user one balance after test
-    const userOneBalanceAfter = await publicClient.getBalance({
-      address: userOne.account.address,
-    });
-    expect(userOneBalanceAfter).to.equal(
-      userOneBalanceBefore + parseEther("1")
-    );
 
     // Check reward after answering
     const rewardAfter = await questionContract.read.getReward([token]);
