@@ -1,3 +1,1 @@
-The project has moved to the GitHub organization:
-
-https://github.com/answer-2-earn
+The project has moved to [organization](https://github.com/answer-2-earn).
